@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.1)
+
+project(CourseWork2 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 14)
+set(PROJECT_BINARY_DIR ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+
+add_subdirectory(src)
