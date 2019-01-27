@@ -1,10 +1,6 @@
 #include "datamodifier.h"
 #include "graphics_adapter.h"
-
-const int numberOfItems = 3600;
-const float curveDivider = 3.0f;
-const int lowerNumberOfItems = 900;
-const float lowerCurveDivider = 0.75f;
+#include "core_api.h"
 
 ScatterDataModifier::ScatterDataModifier(const std::vector<QComboBox *> &boxes, QChartView *depTz,
                                          QChartView *depXz, QChartView *depWT, QChartView *depAll)
@@ -28,20 +24,33 @@ static inline std::pair<T, T> _find_min_max(const std::vector<T> &v) {
     return {mi, ma};
 }
 
+
+void update(QAbstractAxis *m_axis, double m, double &cur_max) {
+    if (m > cur_max) {
+        m_axis->setMax(m);
+        cur_max = m;
+    }
+}
+
 static inline void rebuildChartWithNewData(QChart *chart, const std::vector<chart_data_t> &datas) {
     chart->removeAllSeries();
-//    std::pair<double, double> min_max_x = _find_min_max(x);
-//    std::pair<double, double> min_max_y = _find_min_max(y);
-//    chart->axisX()->setRange(min_max_x.first, min_max_x.second);
-//    chart->axisY()->setRange(min_max_y.first, min_max_y.second);
+    auto *m_axisX = chart->axisX();
+    auto *m_axisY = chart->axisY();
 
-    for (auto data : datas) {
+    double cur_max_x = std::numeric_limits<double>::min();
+    double cur_max_y = std::numeric_limits<double>::min();
+
+    for (const auto &data : datas) {
         auto *series = new QSplineSeries();
 
         size_t minSz = std::min(data.x_data.size(), data.y_data.size());
 
         for (size_t i = 0; i != minSz; ++i) {
-            series->append(data.x_data[i], data.y_data[i]);
+            double m_x = data.x_data[i];
+            double m_y = data.y_data[i];
+            series->append(m_x, m_y);
+            update(m_axisX, m_x, cur_max_x);
+            update(m_axisY, m_y, cur_max_y);
         }
 
         QColor color(data.rgb_color.c_str());
@@ -114,16 +123,16 @@ void ScatterDataModifier::replot() {
     std::vector<chart_data_t> data_All;
 
     try {
-        data_TZ = get_graphics_T(configs);
-        data_XZ = get_graphics_X(configs);
-        data_WT = get_graphics_W(configs);
-        data_All = get_graphics_all(configs);
+        data_TZ = get_graphics_T();
+        data_XZ = get_graphics_X();
+        data_WT = get_graphics_W();
+        data_All = get_graphics_all();
     } catch (std::runtime_error &e) {
         showMessage(e.what());
     }
 
     rebuildChartWithNewData(depTz->chart(), data_TZ);
     rebuildChartWithNewData(depXz->chart(), data_XZ);
-    rebuildChartWithNewData(depTz->chart(), data_WT);
-    rebuildChartWithNewData(depTz->chart(), data_All);
+    rebuildChartWithNewData(depWT->chart(), data_WT);
+    rebuildChartWithNewData(depAll->chart(), data_All);
 }
