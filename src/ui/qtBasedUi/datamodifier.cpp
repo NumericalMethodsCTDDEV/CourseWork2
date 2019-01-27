@@ -117,6 +117,8 @@ void ScatterDataModifier::replot() {
     loadConfig();
     const config_singleton_t *configs = config_singleton_t::getConfigs();
 
+    solve(configs);
+
     std::vector<chart_data_t> data_TZ;
     std::vector<chart_data_t> data_XZ;
     std::vector<chart_data_t> data_WT;
