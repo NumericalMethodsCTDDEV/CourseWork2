@@ -27,8 +27,8 @@ static inline std::pair<T, T> _find_min_max(const std::vector<T> &v) {
 
 void update(QAbstractAxis *m_axis, double m, double &cur_max) {
     if (m > cur_max) {
-        m_axis->setMax(m);
-        cur_max = m;
+        m_axis->setMax(1.1 * m);
+        cur_max = 1.1 * m;
     }
 }
 

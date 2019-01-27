@@ -81,8 +81,8 @@ int showUi(int argc, char **argv) {
         for (size_t i = 0; i != lineEdits.size(); ++i)
             lineEdits[i] = createComboBox();
 
-        lineEdits[0]->setCurrentText("16000000000");
-        lineEdits[1]->setCurrentText("133375.7085173642");
+        lineEdits[0]->setCurrentText("1600000");
+        lineEdits[1]->setCurrentText("80000");
         lineEdits[2]->setCurrentText("1");
         lineEdits[3]->setCurrentText("700000");
         lineEdits[4]->setCurrentText("293");
@@ -91,11 +91,11 @@ int showUi(int argc, char **argv) {
         lineEdits[7]->setCurrentText("0.13");
         lineEdits[8]->setCurrentText("8e-16");
         lineEdits[9]->setCurrentText("8.314");
-        lineEdits[10]->setCurrentText("0.06");
+        lineEdits[10]->setCurrentText("0.02");
         lineEdits[11]->setCurrentText("2000");
         lineEdits[12]->setCurrentText("0.0001");
-        lineEdits[13]->setCurrentText("0.001");
-        lineEdits[14]->setCurrentText("0.5");
+        lineEdits[13]->setCurrentText("0.0001");
+        lineEdits[14]->setCurrentText("0.8");
 
 //        lineEdits[3]->setCurrentText("10");
 //        lineEdits[3]->lineEdit()->setReadOnly(true);
