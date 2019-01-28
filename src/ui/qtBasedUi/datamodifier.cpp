@@ -56,6 +56,8 @@ static inline void rebuildChartWithNewData(QChart *chart, const std::vector<char
         QColor color(data.rgb_color.c_str());
         series->setColor(color);
         chart->addSeries(series);
+        series->attachAxis(m_axisX);
+        series->attachAxis(m_axisY);
     }
 }
 

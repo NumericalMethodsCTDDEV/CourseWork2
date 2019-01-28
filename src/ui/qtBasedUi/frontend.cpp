@@ -38,7 +38,7 @@ int showUi(int argc, char **argv) {
     chartsLayout->addWidget(qchartTz, 0, 0);
     QChartView *qchartXz = createChartView("X(t, z)", "z", "X");
     chartsLayout->addWidget(qchartXz, 0, 1);
-    QChartView *qchartWT = createChartView("W(X, T)", "T", "W");
+    QChartView *qchartWT = createChartView("W(t, z)", "z", "W");
     chartsLayout->addWidget(qchartWT, 1, 0);
     QChartView *qchartAll = createChartView("All", "", "");
     chartsLayout->addWidget(qchartAll, 1, 1);
