@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <map>
+#include <vector>
 #include <iomanip>
 #include <cassert>
 #include <cstring>
@@ -51,7 +52,7 @@ void parse_config(const config_singleton_t *configs) {
     kappa = lambda / (rho * C);
 }
 
-void solve_matrix(double *a, double *b, double *c, double *d, double *result, int n) {
+void solve_matrix(vector<double> &a, vector<double> &b, vector<double> &c, vector<double> &d, vector<double> &result, int n) {
     c[0] /= b[0];
     d[0] /= b[0];
     b[0] = 1;
@@ -73,31 +74,7 @@ bool eq(double a, double b) {
     return fabs(b - a) < EPS;
 }
 
-void solve_matrix_with_check(double *a, double *b, double *c, double *d, double *result, int n) {
-    double *na = new double[n];
-    memcpy(na, a, sizeof(double) * n);
-    double *nb = new double[n];
-    memcpy(nb, b, sizeof(double) * n);
-    double *nc = new double[n];
-    memcpy(nc, c, sizeof(double) * n);
-    double *nd = new double[n];
-    memcpy(nd, d, sizeof(double) * n);
-
-    solve_matrix(na, nb, nc, nd, result, n);
-
-    assert(eq(b[0] * result[0] + c[0] * result[1], d[0]));
-    for (int i = 1; i + 1 < n; ++i) {
-        assert(eq(a[i] * result[i - 1] + b[i] * result[i] + c[i] * result[i + 1], d[i]));
-    }
-    assert(eq(a[n - 1] * result[n - 2] + b[n - 1] * result[n - 1], d[n - 1]));
-
-    delete[] na;
-    delete[] nb;
-    delete[] nc;
-    delete[] nd;
-}
-
-void build_matrix_z(double *a, double *b, double *c, double *d, const double *prev_z, const double *prev_t, int n) {
+void build_matrix_z(vector<double> &a, vector<double> &b, vector<double> &c, vector<double> &d, const vector<double> &prev_z, const vector<double> &prev_t, int n) {
     double ac = -D / (dz * dz);
     a[0] = 0;
     for (int i = 1; i < n; ++i) {
@@ -119,7 +96,7 @@ void build_matrix_z(double *a, double *b, double *c, double *d, const double *pr
     }
 }
 
-void build_matrix_t(double *a, double *b, double *c, double *d, const double *z, const double *prev_t, int n) {
+void build_matrix_t(vector<double> &a, vector<double> &b, vector<double> &c, vector<double> &d, const vector<double> &z, const vector<double> &prev_t, int n) {
     double ac = -kappa / (dz * dz);
     a[0] = ac;
     for (int i = 1; i < n; ++i) {
@@ -145,7 +122,7 @@ void build_matrix_t(double *a, double *b, double *c, double *d, const double *z,
     d[n - 1] -= ac * T0;
 }
 
-void print_answer(int layer, double *z, double *t, double *G, int n) {
+void print_answer(int layer, vector<double> &z, vector<double> &t, vector<double> &G, int n) {
     freopen(("outputTz" + to_string(num)).c_str(), "w", stdout);
     ios_base::sync_with_stdio(false);
     cout << fixed << setprecision(13);
@@ -180,15 +157,7 @@ void print_answer(int layer, double *z, double *t, double *G, int n) {
 void solve_old() {
     int n = (int)((MAX_Z / dz) + 0.5);
 
-    double *a = new double[n];
-    double *b = new double[n];
-    double *c = new double[n];
-    double *d = new double[n];
-
-    double *prev_z = new double[n];
-    double *prev_t = new double[n];
-    double *z = new double[n];
-    double *t = new double[n];
+    vector<double> a(n, 0.0), b(n, 0.0), c(n, 0.0), d(n, 0.0), prev_z(n, 0.0), prev_t(n, 0.0), z(n, 0.0), t(n, 0.0);
 
     for (int i = 0; i < n; ++i) {
         prev_z[i] = 1;
@@ -208,7 +177,7 @@ void solve_old() {
             a[i] = t[i - 1] - t[i];
         }
 
-        int pos = max_element(a + 1, a + n) - a;
+        int pos = distance(a.begin(), max_element(a.begin(), a.end()));
         if (pos >= n * threshold * plot_num / 10) {
             for (int i = 0; i < n; ++i) {
                 b[i] = K * pow(z[i], alpha) * exp(-E / (R * t[i]));
@@ -230,14 +199,6 @@ void solve_old() {
         swap(prev_z, z);
         swap(prev_t, t);
     }
-    delete[] a;
-    delete[] b;
-    delete[] c;
-    delete[] d;
-    delete[] prev_z;
-    delete[] prev_t;
-    delete[] z;
-    delete[] t;
 }
 
 long long num;
