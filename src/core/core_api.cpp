@@ -30,7 +30,7 @@ double MAX_T = 2000;
 double dz = 0.0001;
 double dt = 0.0001;
 
-double threshold = 0.3;
+double threshold = 0.6;
 
 void parse_config(const config_singleton_t *configs) {
     K = configs -> K;
@@ -47,7 +47,6 @@ void parse_config(const config_singleton_t *configs) {
     MAX_T = configs -> MAX_T;
     dz = configs -> dz;
     dt = configs -> dt;
-    threshold = configs -> threshold;
 
     kappa = lambda / (rho * C);
 }

@@ -102,10 +102,9 @@ const config_singleton_t *ScatterDataModifier::loadConfig() const {
     const double MAX_T = equetionParametres[11]->currentText().toDouble();
     const double dz = equetionParametres[12]->currentText().toDouble();
     const double dt = equetionParametres[13]->currentText().toDouble();
-    const double threshold = equetionParametres[14]->currentText().toDouble();
 
     return config_singleton_t::createConfigs(K, E, alpha, Q, T0, rho, C, lambda, D, R, MAX_Z,
-                                             MAX_T, dz, dt, threshold);
+                                             MAX_T, dz, dt);
 }
 
 static inline void showMessage(const QString &msg) {

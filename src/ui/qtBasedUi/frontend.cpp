@@ -52,7 +52,7 @@ int showUi(int argc, char **argv) {
 
     QGroupBox *configGroupBox = new QGroupBox(QStringLiteral("Configs"));
     auto *configGroupBoxLayout = new QVBoxLayout;
-    std::vector<QComboBox *> lineEdits(15, nullptr);
+    std::vector<QComboBox *> lineEdits(14, nullptr);
     configGroupBox->setMinimumWidth(300);
 //    configGroupBox->setMaximumHeight(1000);
 
@@ -60,7 +60,7 @@ int showUi(int argc, char **argv) {
 
         // Warning! Do not change places of labels and boxes at arrays
 
-        QLabel *labels[15];
+        QLabel *labels[14];
         labels[0] = new QLabel("K");
         labels[1] = new QLabel("E");
         labels[2] = new QLabel("alpha");
@@ -75,14 +75,14 @@ int showUi(int argc, char **argv) {
         labels[11] = new QLabel("MAX_T");
         labels[12] = new QLabel("dz");
         labels[13] = new QLabel("dt");
-        labels[14] = new QLabel("threshold");
+        // labels[14] = new QLabel("threshold");
 
 
         for (size_t i = 0; i != lineEdits.size(); ++i)
             lineEdits[i] = createComboBox();
 
-        lineEdits[0]->setCurrentText("1600000");
-        lineEdits[1]->setCurrentText("80000");
+        lineEdits[0]->setCurrentText("16032100");
+        lineEdits[1]->setCurrentText("80010");
         lineEdits[2]->setCurrentText("1");
         lineEdits[3]->setCurrentText("700000");
         lineEdits[4]->setCurrentText("293");
@@ -91,11 +91,11 @@ int showUi(int argc, char **argv) {
         lineEdits[7]->setCurrentText("0.13");
         lineEdits[8]->setCurrentText("8e-16");
         lineEdits[9]->setCurrentText("8.314");
-        lineEdits[10]->setCurrentText("0.02");
+        lineEdits[10]->setCurrentText("0.06");
         lineEdits[11]->setCurrentText("2000");
         lineEdits[12]->setCurrentText("0.0001");
         lineEdits[13]->setCurrentText("0.0001");
-        lineEdits[14]->setCurrentText("0.8");
+        // lineEdits[14]->setCurrentText("0.6");
 
 //        lineEdits[3]->setCurrentText("10");
 //        lineEdits[3]->lineEdit()->setReadOnly(true);
@@ -105,7 +105,7 @@ int showUi(int argc, char **argv) {
 
         auto *gridLayout = new QGridLayout;
 
-        for (int i = 0; i != 15; ++i) {
+        for (int i = 0; i != 14; ++i) {
             gridLayout->addWidget(labels[i], i, 0);
             gridLayout->addWidget(lineEdits[static_cast<size_t>(i)], i, 1);
         }
